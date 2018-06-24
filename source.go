@@ -69,6 +69,14 @@ func CategoryPuisi(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, Dir_Name+"CategoryPuisi.html", data)
 }
 
+func CategoryNews(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	data["news"] = DataNews()
+
+	RenderTemplate(w, Dir_Name+"CategoryNews.html", data)
+}
+
 func CategoryVideo(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, Dir_Name+"CategoryVideo.html", nil)
 }
@@ -77,9 +85,6 @@ func CategoryGambar(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, Dir_Name+"CategoryGambar.html", nil)
 }
 
-func CategoryNews(w http.ResponseWriter, r *http.Request) {
-	RenderTemplate(w, Dir_Name+"CategoryNews.html", nil)
-}
 
 
 // Connection
@@ -92,7 +97,7 @@ func Conn() *sql.DB {
 }
 
 
-// Model
+// Model Puisi
 type Puisi struct {
 	Id_karya int
 	Kategory string
@@ -103,7 +108,7 @@ type Puisi struct {
 func DataPuisi() []Puisi {
 	db := Conn()
 	defer db.Close()
-	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='puisi'")
+	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='Puisi'")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -118,4 +123,33 @@ func DataPuisi() []Puisi {
 		all_puisi = append(all_puisi, s)
 	}
 	return all_puisi
+}
+
+
+// Model News
+type News struct {
+	Id_karya int
+	Kategory string
+	Judul string
+	Deskripsi string
+}
+
+func DataNews() []News {
+	db := Conn()
+	defer db.Close()
+	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='News'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	all_news := []News{}
+	for rows.Next() {
+		s := News{}
+		err = rows.Scan(&s.Id_karya, &s.Kategory, &s.Judul, &s.Deskripsi)
+		if err != nil {
+			panic(err.Error())
+		}
+		all_news = append(all_news, s)
+	}
+	return all_news
 }
