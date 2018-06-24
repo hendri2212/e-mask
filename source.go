@@ -3,38 +3,26 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"net/http"
 	"io/ioutil"
+	_ "github.com/go-sql-driver/mysql"
+	"net/http"
+	"database/sql"
 )
 
 var Dir_Name = "D:/CODE/GOPATH/src/e-mask/"
 var BaseURL = "http://localhost:8080/"
 
 func main() {
-    // http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-    //     var data = map[string]string{
-    //         "Name":    "john wick",
-    //         "Message": "have a nice day",
-    //     }
-
-    //     var t, err = template.ParseFiles("index.html")
-    //     if err != nil {
-    //         fmt.Println(err.Error())
-    //         return
-    //     }
-
-    //     t.Execute(w, data)
-    // })
-
     http.HandleFunc("/", Home)
-    // http.Handle("/assets/img/", http.StripPrefix("/assets/img/", http.FileServer(http.Dir("./assets/img"))))
+    http.HandleFunc("/puisi/", CategoryPuisi)
+    http.HandleFunc("/video/", CategoryVideo)
+    http.HandleFunc("/news/", CategoryNews)
+    http.HandleFunc("/gambar/", CategoryGambar)
+
     http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
-
     fmt.Println("Starting webserver on port 8080...")
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe("127.0.0.1:8080", nil)
 }
-
-
 
 func ReadHtmlFile(name string) []byte {
 	data, err := ioutil.ReadFile(name)
@@ -68,15 +56,66 @@ func TemplateHTML(x interface{}) template.HTML {
 	return template.HTML(x1)
 }
 
+// Control
 func Home(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, Dir_Name+"index.html", nil)
 }
 
-type Image struct {
-    Title string
-    URL   string
+func CategoryPuisi(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+
+	data["puisi"] = DataPuisi()
+
+	RenderTemplate(w, Dir_Name+"CategoryPuisi.html", data)
 }
 
-var images = map[string]*Image{
-    "gambar":     {"The Go Gopher", "https://i1.wp.com/www.raparapa.com/wp-content/uploads/2017/12/keserasian-seni-rupa.jpg?fit=675%2C900&ssl=1"},
+func CategoryVideo(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, Dir_Name+"CategoryVideo.html", nil)
+}
+
+func CategoryGambar(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, Dir_Name+"CategoryGambar.html", nil)
+}
+
+func CategoryNews(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, Dir_Name+"CategoryNews.html", nil)
+}
+
+
+// Connection
+func Conn() *sql.DB {
+	db, err := sql.Open("mysql", "root:@/e-mask")
+	if err != nil {
+		panic(0)
+	}
+	return db
+}
+
+
+// Model
+type Puisi struct {
+	Id_karya int
+	Kategory string
+	Judul string
+	Deskripsi string
+}
+
+func DataPuisi() []Puisi {
+	db := Conn()
+	defer db.Close()
+	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='puisi'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	all_puisi := []Puisi{}
+	for rows.Next() {
+		s := Puisi{}
+		err = rows.Scan(&s.Id_karya, &s.Kategory, &s.Judul, &s.Deskripsi)
+		if err != nil {
+			panic(err.Error())
+		}
+		all_puisi = append(all_puisi, s)
+	}
+	return all_puisi
 }
