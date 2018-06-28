@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Edit Data Karya</title>
+	</head>
+	<body>
+		{{if .Data.info}}
+			{{.Data.info}}<br><br>
+		{{end}}
+		
+		<form method="post">
+		Kategory <input type="text" name="Kategory" value="{{.Data.karya.Kategory}}"><br>
+		Judul <input type="text" name="Judul" value="{{.Data.karya.Judul}}"><br>
+		Deskripsi <input type="text" name="Deskripsi" value="{{.Data.karya.Deskripsi}}"><br>
+		<input type="submit" value="Update">
+		<a href="{{.Data.baseurl}}karya/">Back</a>
+		</form>
+	</body>
+</html>

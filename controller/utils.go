@@ -8,12 +8,11 @@ import (
 	"net/http"
 )
 
-// Membuat connection
-func Conn() (*sql.DB, error) {
-	db, err := sql.Open("mysql", "root:@/go_karya")
+// Create connection
+func Conn() *sql.DB {
+	db, err := sql.Open("mysql", "root:@/e-mask")
 	if err != nil {
-		//panic(0)
-		return nil, err
+		panic(0)
 	}
 	return db
 }
@@ -27,7 +26,7 @@ func ReadHtmlFile(name string) []byte {
 	return data
 }
 
-// Menyiapkan dan Mengeksekusi template html & data yang akan ditampilkan
+// menyiapkan dan mengeksekusi template html & data yg akan ditampilkan
 func RenderTemplate(w http.ResponseWriter, name string, data map[string]interface{}) {
 	funcs := template.FuncMap{"Add": TemplateAdd, "ToHTML": TemplateHTML}
 	t := template.New("t1")

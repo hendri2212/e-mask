@@ -1,24 +1,25 @@
 package main
 
 import (
-	"e-mask/controller"
+	"e-mask-2/controller"
 	"fmt"
 	"net/http"
 )
 
 func main() {
-	// fmt.Println("Buktikan kamu bisa Pazrin !!!")
-	// membuat file server
-
-	dir_name := controller.Dir_Name
+	// file server
+	dir_name := controller.Dir_Name + "res/"
 	fileServer := http.FileServer(http.Dir(dir_name))
-	http.Handle("res/", http.StripPrefix("res/", fileServer))
+	http.Handle("/res/", http.StripPrefix("/res/", fileServer))
 
-	// menghendle path halaman yang akan di tampilkan
+	// menghendel path halaman yang akan divisualisasikan
 	http.HandleFunc("/", controller.HomePage)
 	http.HandleFunc("/karya/", controller.PageKaryaShowAll)
+	http.HandleFunc("/karya/insert", controller.PageKaryaInsert)
+	http.HandleFunc("/karya/edit", controller.PageKaryaEdit)
+	http.HandleFunc("/karya/delete", controller.PageKaryaDelete)
 
-	// menjalankan server dengan domain/ip dengan port tertentu
-	fmt.Println("Starting webserver on port 8081...")
-	http.ListenAndServe("127.0.0.1:8081", nil)
+	//menjalankan server dengan domain/ip dengan port tertentu
+	fmt.Println("Starting webserver on port 8080...")
+	http.ListenAndServe("127.0.0.1:8080", nil)
 }

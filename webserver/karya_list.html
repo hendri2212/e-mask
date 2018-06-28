@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>e-mask READ</title>
+	</head>
+	<body>
+			
+		{{ $base := .Data.baseurl}}
+		{{range $k, $v := .Data.karya}}
+			<p>{{Add $k 1}}. {{$v.Kategory}}</p>
+			<p><b>{{$v.Judul}}</b></p>
+			<p>{{$v.Deskripsi}}</p> 
+			<a href="{{$base}}/karya/edit?Id_karya={{$v.Id_karya}}">Edit</a> | 
+			<a href="{{$base}}/karya/delete?Id_karya={{$v.Id_karya}}">Delete</a><br>			
+		{{end}}
+		
+		<br><br><a href="{{.Data.baseurl}}karya/insert">Input Data karya</a>
+	</body>
+</html>

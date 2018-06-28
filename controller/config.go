@@ -1,5 +1,7 @@
 package controller
 
-// direktori tempat kerja
-var Dir_Name = "C:/GOPATH/src/e-mask/"
-var BaseURL = "http://localhost:8081/"
+// direktori html
+var Dir_Name = "C:/GOPATH/src/e-mask-2/webserver/"
+
+// URL
+var BaseURL = "http://localhost:8080/"
