@@ -10,10 +10,13 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb">
 					<div class="col-6">
-						<li class="breadcrumb-item active" aria-current="page">Kumpulan Hasil Karya Para Pujangga</li>
+						<li class="breadcrumb-item" aria-current="page">Kumpulan Hasil Karya Para Pujangga</li>
 					</div>
 					<div class="col-6">
-						<input type="text" class="form-control form-control-sm" placeholder="Key Search Here">
+						<form method="POST" class="form-inline float-right">
+									<input type="text" name="KeySearch" class="form-control form-control-sm mr-2" placeholder="Key Search Here">
+								<input type="submit" value="Search" class="btn btn-sm">
+						</form>
 					</div>
 				</ol>
 			</nav>

@@ -6,7 +6,8 @@ import (
 	"io/ioutil"
 	_ "github.com/go-sql-driver/mysql"
 	"net/http"
-	"database/sql"
+	"database/sql" // untuk SQL
+	// "strings" // untuk pencarian
 )
 
 var Dir_Name = "D:/CODE/GOPATH/src/e-mask/"
@@ -18,6 +19,7 @@ func main() {
     http.HandleFunc("/video/", CategoryVideo)
     http.HandleFunc("/news/", CategoryNews)
     http.HandleFunc("/gambar/", CategoryGambar)
+    http.HandleFunc("/login/", Login)
 
     http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
     fmt.Println("Starting webserver on port 8080...")
@@ -62,11 +64,22 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func CategoryPuisi(w http.ResponseWriter, r *http.Request) {
-	data := make(map[string]interface{})
+	if r.Method == "POST" {
+		r.ParseForm()
+		KeySearch := r.PostFormValue("KeySearch")
+		fmt.Println(KeySearch)
 
-	data["puisi"] = DataPuisi()
 
-	RenderTemplate(w, Dir_Name+"CategoryPuisi.html", data)
+		data := make(map[string]interface{})
+		data["puisi"] = DataSearch()
+		RenderTemplate(w, Dir_Name+"CategoryPuisi.html", data)
+	} else {
+		data := make(map[string]interface{})
+
+		data["puisi"] = DataPuisi()
+
+		RenderTemplate(w, Dir_Name+"CategoryPuisi.html", data)
+	}
 }
 
 func CategoryNews(w http.ResponseWriter, r *http.Request) {
@@ -83,6 +96,30 @@ func CategoryVideo(w http.ResponseWriter, r *http.Request) {
 
 func CategoryGambar(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, Dir_Name+"CategoryGambar.html", nil)
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		r.ParseForm()
+		Username := r.PostFormValue("Username")
+		Password := r.PostFormValue("Password")
+		fmt.Println(Username, Password)
+
+
+		data := make(map[string]interface{})
+		data["puisi"] = DataSearch()
+		if Username == "user" && Password == "user" {
+			RenderTemplate(w, Dir_Name+"PageAdmin.html", nil)
+		} else {
+			RenderTemplate(w, Dir_Name+"Login.html", nil)
+		}
+	} else {
+		RenderTemplate(w, Dir_Name+"Login.html", nil)
+	}
+}
+
+func PageAdmin(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, Dir_Name+"PageAdmin.html", nil)
 }
 
 
@@ -123,6 +160,29 @@ func DataPuisi() []Puisi {
 		all_puisi = append(all_puisi, s)
 	}
 	return all_puisi
+}
+
+func DataSearch() []Puisi {
+	db := Conn()
+	defer db.Close()
+
+	// KeySearch := "Cinta"
+	// rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Judul LIKE '%?%'", KeySearch)
+	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Judul LIKE '%cinta%'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	all_search := []Puisi{}
+	for rows.Next() {
+		s := Puisi{}
+		err = rows.Scan(&s.Id_karya, &s.Kategory, &s.Judul, &s.Deskripsi)
+		if err != nil {
+			panic(err.Error())
+		}
+		all_search = append(all_search, s)
+	}
+	return all_search
 }
 
 
