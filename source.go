@@ -71,7 +71,7 @@ func CategoryPuisi(w http.ResponseWriter, r *http.Request) {
 
 
 		data := make(map[string]interface{})
-		data["puisi"] = DataSearch()
+		data["puisi"] = SearchPuisi(KeySearch)
 		RenderTemplate(w, Dir_Name+"CategoryPuisi.html", data)
 	} else {
 		data := make(map[string]interface{})
@@ -83,11 +83,22 @@ func CategoryPuisi(w http.ResponseWriter, r *http.Request) {
 }
 
 func CategoryNews(w http.ResponseWriter, r *http.Request) {
-	data := make(map[string]interface{})
+	if r.Method == "POST" {
+		r.ParseForm()
+		KeySearch := r.PostFormValue("KeySearch")
+		fmt.Println(KeySearch)
 
-	data["news"] = DataNews()
 
-	RenderTemplate(w, Dir_Name+"CategoryNews.html", data)
+		data := make(map[string]interface{})
+		data["news"] = SearchNews(KeySearch)
+		RenderTemplate(w, Dir_Name+"CategoryNews.html", data)
+	} else {
+		data := make(map[string]interface{})
+
+		data["news"] = DataNews()
+
+		RenderTemplate(w, Dir_Name+"CategoryNews.html", data)
+	}
 }
 
 func CategoryVideo(w http.ResponseWriter, r *http.Request) {
@@ -105,9 +116,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Password := r.PostFormValue("Password")
 		fmt.Println(Username, Password)
 
-
-		data := make(map[string]interface{})
-		data["puisi"] = DataSearch()
 		if Username == "user" && Password == "user" {
 			RenderTemplate(w, Dir_Name+"PageAdmin.html", nil)
 		} else {
@@ -140,12 +148,13 @@ type Puisi struct {
 	Kategory string
 	Judul string
 	Deskripsi string
+	DateTime string
 }
 
 func DataPuisi() []Puisi {
 	db := Conn()
 	defer db.Close()
-	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='Puisi'")
+	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='Puisi'")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -153,7 +162,7 @@ func DataPuisi() []Puisi {
 	all_puisi := []Puisi{}
 	for rows.Next() {
 		s := Puisi{}
-		err = rows.Scan(&s.Id_karya, &s.Kategory, &s.Judul, &s.Deskripsi)
+		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -162,13 +171,11 @@ func DataPuisi() []Puisi {
 	return all_puisi
 }
 
-func DataSearch() []Puisi {
+func SearchPuisi(KeySearch string) []Puisi {
 	db := Conn()
 	defer db.Close()
 
-	// KeySearch := "Cinta"
-	// rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Judul LIKE '%?%'", KeySearch)
-	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Judul LIKE '%cinta%'")
+	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Judul LIKE ?", KeySearch)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -176,7 +183,7 @@ func DataSearch() []Puisi {
 	all_search := []Puisi{}
 	for rows.Next() {
 		s := Puisi{}
-		err = rows.Scan(&s.Id_karya, &s.Kategory, &s.Judul, &s.Deskripsi)
+		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -192,12 +199,13 @@ type News struct {
 	Kategory string
 	Judul string
 	Deskripsi string
+	DateTime string
 }
 
 func DataNews() []News {
 	db := Conn()
 	defer db.Close()
-	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='News'")
+	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='News'")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -205,11 +213,32 @@ func DataNews() []News {
 	all_news := []News{}
 	for rows.Next() {
 		s := News{}
-		err = rows.Scan(&s.Id_karya, &s.Kategory, &s.Judul, &s.Deskripsi)
+		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
 		if err != nil {
 			panic(err.Error())
 		}
 		all_news = append(all_news, s)
 	}
 	return all_news
+}
+
+func SearchNews(KeySearch string) []News {
+	db := Conn()
+	defer db.Close()
+
+	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='News' AND Judul LIKE ?", KeySearch)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	all_search := []News{}
+	for rows.Next() {
+		s := News{}
+		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
+		if err != nil {
+			panic(err.Error())
+		}
+		all_search = append(all_search, s)
+	}
+	return all_search
 }
