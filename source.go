@@ -58,6 +58,8 @@ func TemplateHTML(x interface{}) template.HTML {
 	return template.HTML(x1)
 }
 
+
+
 // Control
 func Home(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, Dir_Name+"index.html", nil)
@@ -142,8 +144,9 @@ func Conn() *sql.DB {
 }
 
 
-// Model Puisi
-type Puisi struct {
+
+// Type Data
+type TypeKarya struct {
 	Id_karya int
 	Kategory string
 	Judul string
@@ -151,7 +154,10 @@ type Puisi struct {
 	DateTime string
 }
 
-func DataPuisi() []Puisi {
+
+
+// Model Puisi
+func DataPuisi() []TypeKarya {
 	db := Conn()
 	defer db.Close()
 	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='Puisi'")
@@ -159,9 +165,9 @@ func DataPuisi() []Puisi {
 		panic(err.Error())
 	}
 
-	all_puisi := []Puisi{}
+	all_puisi := []TypeKarya{}
 	for rows.Next() {
-		s := Puisi{}
+		s := TypeKarya{}
 		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
 		if err != nil {
 			panic(err.Error())
@@ -171,18 +177,18 @@ func DataPuisi() []Puisi {
 	return all_puisi
 }
 
-func SearchPuisi(KeySearch string) []Puisi {
+func SearchPuisi(KeySearch string) []TypeKarya {
 	db := Conn()
 	defer db.Close()
 
-	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Judul LIKE ?", KeySearch)
+	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='Puisi' AND Judul LIKE ?", "%"+KeySearch+"%")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	all_search := []Puisi{}
+	all_search := []TypeKarya{}
 	for rows.Next() {
-		s := Puisi{}
+		s := TypeKarya{}
 		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
 		if err != nil {
 			panic(err.Error())
@@ -193,16 +199,9 @@ func SearchPuisi(KeySearch string) []Puisi {
 }
 
 
-// Model News
-type News struct {
-	Id_karya int
-	Kategory string
-	Judul string
-	Deskripsi string
-	DateTime string
-}
 
-func DataNews() []News {
+// Model News
+func DataNews() []TypeKarya {
 	db := Conn()
 	defer db.Close()
 	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='News'")
@@ -210,9 +209,9 @@ func DataNews() []News {
 		panic(err.Error())
 	}
 
-	all_news := []News{}
+	all_news := []TypeKarya{}
 	for rows.Next() {
-		s := News{}
+		s := TypeKarya{}
 		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
 		if err != nil {
 			panic(err.Error())
@@ -222,18 +221,18 @@ func DataNews() []News {
 	return all_news
 }
 
-func SearchNews(KeySearch string) []News {
+func SearchNews(KeySearch string) []TypeKarya {
 	db := Conn()
 	defer db.Close()
 
-	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='News' AND Judul LIKE ?", KeySearch)
+	rows, err := db.Query("SELECT Id_karya, DateTime, Kategory, Judul, Deskripsi FROM tb_karya WHERE Kategory='News' AND Judul LIKE ?", "%"+KeySearch+"%")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	all_search := []News{}
+	all_search := []TypeKarya{}
 	for rows.Next() {
-		s := News{}
+		s := TypeKarya{}
 		err = rows.Scan(&s.Id_karya, &s.DateTime, &s.Kategory, &s.Judul, &s.Deskripsi)
 		if err != nil {
 			panic(err.Error())

@@ -13,10 +13,7 @@
 						<li class="breadcrumb-item active" aria-current="page">Kumpulan berita terupdate</li>
 					</div>
 					<div class="col-6">
-						<form method="POST" class="form-inline float-right">
-							<input type="text" name="KeySearch" class="form-control form-control-sm mr-2" placeholder="Key Search Here">
-							<input type="submit" value="Search" class="btn btn-sm">
-						</form>
+						<input type="text" class="form-control form-control-sm" placeholder="Key Search Here">
 					</div>
 				</ol>
 			</nav>
@@ -25,16 +22,13 @@
 			<div class="alert alert-warning">
 				<div class="row">
 					<div class="col-2">
-						<img class="rounded-circle img-fluid" src="../assets/img/video.gif" alt="Gambar Kecil" alt="Card image cap">
+						<img class="card-img-top" src="../assets/img/video.gif" alt="Gambar Kecil" alt="Card image cap">
 					</div>
 					<div class="col">
-						<h3 style="margin-bottom: -5px">{{$v.Judul}}</h3>
-						<small class="text-muted ml-1">{{$v.DateTime}}</small><br>
+						<h3>{{$v.Judul}}</h3>
 						{{$v.Deskripsi}} <br> 
 					</div>
 				</div>
-				<hr>
-				<img class="card-img-top" src="../assets/img/News.jpg" alt="Gambar Kecil" alt="Card image cap">
 			</div>
 			{{end}}
 			<a href="{{.Data.baseurl}}"><input type="button" value="Close" class="btn btn-sm float-right"></a>
