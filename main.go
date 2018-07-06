@@ -13,7 +13,7 @@ func main() {
 	http.Handle("/res/", http.StripPrefix("/res/", fileServer))
 
 	// menghendel path halaman yang akan divisualisasikan
-	http.HandleFunc("/", controller.HomePage)
+	http.HandleFunc("/", controller.Login)
 	http.HandleFunc("/karya/", controller.PageKaryaShowAll)
 	http.HandleFunc("/karya/insert", controller.PageKaryaInsert)
 	http.HandleFunc("/karya/edit", controller.PageKaryaEdit)

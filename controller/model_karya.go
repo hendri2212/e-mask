@@ -1,5 +1,7 @@
 package controller
 
+import "net/http"
+
 type Karya struct {
 	Id_karya  string
 	Kategory  string
@@ -68,4 +70,39 @@ func DeleteDataKarya(Id_karya string) {
 	stmt, _ := db.Prepare("DELETE FROM tb_karya WHERE Id_karya=?")
 	stmt.Exec(Id_karya)
 	defer stmt.Close()
+}
+
+// variabel tabel tb_user untuk cek login
+type Userlogin struct {
+	Username string
+	Password string
+}
+
+// fungsi cek login
+func CekLogin(w http.ResponseWriter, Uname string, Upass string) Userlogin {
+	db := Conn()
+	defer db.Close()
+
+	s := Userlogin{}
+	db.QueryRow("SELECT Username, Password FROM tb_user WHERE Username=? AND Password=?", Uname, Upass).Scan(&s.Username, &s.Password)
+	users := s.Username
+	pass := s.Password
+
+	if Uname == users && Upass == pass {
+		// fmt.Println("benar")
+		// membuat tempat penampungan data karya supaya dapat dipanggil melalui template html
+		data := make(map[string]interface{})
+		// mengambil data karya dari database
+		data["karya"] = ReadDataKarya()
+
+		RenderTemplate(w, Dir_Name+"karya_list.html", data)
+	} else {
+		// fmt.Println("salah")
+		data := make(map[string]interface{})
+		data["salah"] = "Maaf username atau password anda salah"
+
+		RenderTemplate(w, Dir_Name+"Login.html", data)
+		// RenderTemplate(w, Dir_Name+"Login.html", nil)
+	}
+	return s
 }

@@ -13,6 +13,22 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	RenderTemplate(w, Dir_Name+"footer.html", nil)
 }
 
+// ------ FUNGSI LOGIN------ /
+// fungsi untuk menangani halaman utama admin (harus login dulu)
+func Login(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		r.ParseForm()
+		User := r.PostFormValue("Username")
+		Pass := r.PostFormValue("Password")
+		fmt.Println(User, Pass)
+
+		// fungsi model Cek Login
+		CekLogin(w, User, Pass)
+	} else {
+		RenderTemplate(w, Dir_Name+"Login.html", nil)
+	}
+}
+
 // halaman list data karya
 func PageKaryaShowAll(w http.ResponseWriter, r *http.Request) {
 	// membuat tempat penampungan data karya supaya dapat dipanggil melalui template html
