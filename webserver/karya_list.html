@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>e-mask READ</title>
-	</head>
-	<body>
-			
+	
 		{{ $base := .Data.baseurl}}
 		{{range $k, $v := .Data.karya}}
 			<p>{{Add $k 1}}. {{$v.Kategory}}</p>
@@ -15,5 +9,3 @@
 		{{end}}
 		
 		<br><br><a href="{{.Data.baseurl}}karya/insert">Input Data karya</a>
-	</body>
-</html>

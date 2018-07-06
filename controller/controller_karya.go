@@ -8,7 +8,9 @@ import (
 
 // fungsi untuk menangani halaman utama
 func HomePage(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, Dir_Name+"header.html", nil)
 	RenderTemplate(w, Dir_Name+"index.html", nil)
+	RenderTemplate(w, Dir_Name+"footer.html", nil)
 }
 
 // halaman list data karya
@@ -19,7 +21,9 @@ func PageKaryaShowAll(w http.ResponseWriter, r *http.Request) {
 	// mengambil data karya dari database
 	data["karya"] = ReadDataKarya()
 
+	RenderTemplate(w, Dir_Name+"header.html", nil)
 	RenderTemplate(w, Dir_Name+"karya_list.html", data)
+	RenderTemplate(w, Dir_Name+"footer.html", nil)
 }
 
 // halaman tambah record karya
@@ -39,9 +43,14 @@ func PageKaryaInsert(w http.ResponseWriter, r *http.Request) {
 		data["info"] = "Data berhasil ditambahkan ke database"
 
 		// fungsi RenderTemplate()
+		RenderTemplate(w, Dir_Name+"header.html", nil)
 		RenderTemplate(w, Dir_Name+"karya_insert.html", data)
+		RenderTemplate(w, Dir_Name+"footer.html", nil)
+		// PageKaryaShowAll(w, r)
 	} else {
+		RenderTemplate(w, Dir_Name+"header.html", nil)
 		RenderTemplate(w, Dir_Name+"karya_insert.html", nil)
+		RenderTemplate(w, Dir_Name+"footer.html", nil)
 	}
 }
 
@@ -70,7 +79,9 @@ func PageKaryaEdit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data["karya"] = ReadDataKaryaById(Id_karya)
+	RenderTemplate(w, Dir_Name+"header.html", nil)
 	RenderTemplate(w, Dir_Name+"karya_edit.html", data)
+	RenderTemplate(w, Dir_Name+"footer.html", nil)
 }
 
 // halaman hapus record Karya
@@ -83,5 +94,7 @@ func PageKaryaDelete(w http.ResponseWriter, r *http.Request) {
 	DeleteDataKarya(Id_karya)
 	data := make(map[string]interface{})
 	data["info"] = "Data dengan id =" + Id_karya + " berhasil dihapus!"
+	RenderTemplate(w, Dir_Name+"header.html", nil)
 	RenderTemplate(w, Dir_Name+"karya_delete.html", data)
+	RenderTemplate(w, Dir_Name+"footer.html", nil)
 }

@@ -1,26 +1,19 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Insert Data Karya</title>
-	</head>
-	<body>
+
 		<p>Insert Data Karya</p>
 		{{if .Data.info}}
 			{{.Data.info}}<br><br>
 		{{end}}
 		
 		<form method="post">
-		Kategory<input type="text" name="Kategory">
-		<!-- <select name="Kategory">
+		Kategory<!-- <input type="text" name="Kategory"> -->
+		<select name="Kategory">
 			<option value="News">News</option>
 			<option value="Puisi">Puisi</option>
 			<option value="Gambar">Gambar</option>
 			<option value="Video">Video</option>
-		</select> --><br>
+		</select><br>
 		Judul <input type="text" name="Judul"><br>
 		Deskripsi <input type="text" name="Deskripsi"><br>
 		<input type="submit" value="Insert">
 		<a href="{{.Data.baseurl}}karya/">Back</a>
 		</form>
-	</body>
-</html>
