@@ -1,11 +1,51 @@
-	
-		{{ $base := .Data.baseurl}}
-		{{range $k, $v := .Data.karya}}
-			<p>{{Add $k 1}}. {{$v.Kategory}}</p>
-			<p><b>{{$v.Judul}}</b></p>
-			<p>{{$v.Deskripsi}}</p> 
-			<a href="{{$base}}/karya/edit?Id_karya={{$v.Id_karya}}">Edit</a> | 
-			<a href="{{$base}}/karya/delete?Id_karya={{$v.Id_karya}}">Delete</a><br>			
-		{{end}}
-		
-		<br><br><a href="{{.Data.baseurl}}karya/insert">Input Data karya</a>
+      <h3>Daftar Karya</h3>
+      <div class="row pull-right">
+        <div class="col-xs-12">
+          <!-- <form class="form" role="search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Cari Karya..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <button type="submit" class="btn btn-primary">search</button>
+            </div>
+          </form> -->
+        </div>
+      </div>
+      <!-- <button type="button" class="btn addkarya btn-primary">+ Tambahkan Karya</button> -->
+      <div class="table-responsive" style=" height: 350px">
+      <table class="table table-hover" >
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Kategori</th>
+            <th>Judul Karya</th>
+            <th>Deskripsi</th>
+            <!-- <th>Gambar</th> -->
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        {{ $base := .Data.baseurl}}
+        {{range $k, $v := .Data.karya}}
+          <tr>
+            <td>{{Add $k 1}}</td>
+            <td>{{$v.Kategory}}</td>
+            <td>{{$v.Judul}}</td>
+            <td>{{$v.Deskripsi}}</td>
+            <!-- <td><div class="thumbnail-karya"></div></td> -->
+            <td>
+              <a href="{{$base}}/karya/edit?Id_karya={{$v.Id_karya}}"><button type="button" class="btn btn-primary">Edit</button></a>
+              <a href="{{$base}}/karya/delete?Id_karya={{$v.Id_karya}}"><button type="button" class="btn btn-danger">Delete</button></a>
+            </td>
+          </tr>
+        {{end}}
+
+        </tbody>
+      </table>
+    </div>
+      <!-- <ul class="pagination pagination-lg">
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+      </ul> -->

@@ -56,7 +56,7 @@ func PageKaryaInsert(w http.ResponseWriter, r *http.Request) {
 		// model CreateDataKarya()
 		CreateDataKarya("", Kategory, Judul, Deskripsi)
 		data := make(map[string]interface{})
-		data["info"] = "Data berhasil ditambahkan ke database"
+		data["info"] = "Data berhasil ditambahkan ke database silahkan kembali ke "
 
 		// fungsi RenderTemplate()
 		RenderTemplate(w, Dir_Name+"header.html", nil)
@@ -91,7 +91,7 @@ func PageKaryaEdit(w http.ResponseWriter, r *http.Request) {
 		UpdateDataKaryaById(Id_karya, Kategory, Judul, Deskripsi)
 
 		// info yang dicetak di html
-		data["info"] = "Data berhasil diupdate"
+		data["info"] = "Data berhasil diupdate silahkan kembali ke "
 	}
 
 	data["karya"] = ReadDataKaryaById(Id_karya)

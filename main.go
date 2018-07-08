@@ -1,7 +1,7 @@
 package main
 
 import (
-	"e-mask-2/controller"
+	"e-mask/controller"
 	"fmt"
 	"net/http"
 )
@@ -11,6 +11,7 @@ func main() {
 	dir_name := controller.Dir_Name + "res/"
 	fileServer := http.FileServer(http.Dir(dir_name))
 	http.Handle("/res/", http.StripPrefix("/res/", fileServer))
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 
 	// menghendel path halaman yang akan divisualisasikan
 	http.HandleFunc("/", controller.Login)

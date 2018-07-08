@@ -1,12 +1,25 @@
-
-		{{if .Data.info}}
-			{{.Data.info}}<br><br>
-		{{end}}
-		
-		<form method="post">
-		Kategory <input type="text" name="Kategory" value="{{.Data.karya.Kategory}}"><br>
-		Judul <input type="text" name="Judul" value="{{.Data.karya.Judul}}"><br>
-		Deskripsi <input type="text" name="Deskripsi" value="{{.Data.karya.Deskripsi}}"><br>
-		<input type="submit" value="Update">
-		<a href="{{.Data.baseurl}}karya/">Back</a>
-		</form>
+        <h1><center>Tambahkan Karya</center></h1>
+        <br>
+        {{if .Data.info}}
+          <div class="alert alert-success" role="alert">{{.Data.info}} <b>Daftar Karya</b></div><br><br>
+        {{end}}
+        <form method="post">
+        <select name="Kategory" class="form-control text-center" >
+          <option>-- Category --</option>
+          <option value="News">News</option>
+          <option value="Puisi">Puisi</option>
+          <option value="Gambar">Gambar</option>
+          <option value="Video">Video</option>
+        </select>
+        <div class="form-group">
+          Judul : <input type="text" name="Judul" class="form-control" placeholder="Judul Karya" value="{{.Data.karya.Judul}}">
+        </div>
+        <div class="form-group">
+          Deskripsi : <textarea name="Deskripsi" class="form-control" rows="5" id="Deskripsi" placeholder="Deskripsi...">{{.Data.karya.Deskripsi}}</textarea>
+        </div>
+      </div>
+      <center>
+        <button type="submit" class="btn btn-success">Kirim</button>
+      </form>
+        <a href="{{.Data.baseurl}}/karya/"><button class="btn btn-danger">batal</button></a>
+      </center>

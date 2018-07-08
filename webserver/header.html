@@ -1,7 +1,38 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>e-mask CRUD</title>
-	</head>
-	<body>
-		<h3>ini header</h3>
+  <head>
+          <meta charset="utf-8">
+          <title>E-Mask</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{{ .Data.baseurl }}assets/css/bootstrap.min.css">
+    <script src="{{ .Data.baseurl }}assets/js/jquery-3.2.0.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+
+    <!-- JavaScript di bawah untuk support Internet Explorer -->
+    <!-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> -->
+  </head> 
+  <body>
+       <!-- navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="{{.Data.baseurl}}karya/">E-Mask (Mading Sekolah)</a>
+    </nav>
+    <br>
+    <!-- navbar end -->
+
+    <!-- sidebar -->
+    <div class="container">
+    <div class="row">
+    	<div class="col-3">
+        <div class="list-group">
+    		<p class="list-group-item active">Main Menu</p>
+        <a href="{{.Data.baseurl}}karya/" class="list-group-item list-group-item-action">Daftar Karya</a>
+        <a href="{{.Data.baseurl}}karya/insert" class="list-group-item list-group-item-action">Upload Karya <b>+</b></a>
+    	 </div>
+      </div>
+    <!-- end sidebar -->
+
+    <!-- konten utama -->
+    <div class="col-9 card">
+      <div class="container" style="margin-bottom:20px;">

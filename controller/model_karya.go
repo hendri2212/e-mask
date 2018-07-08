@@ -28,7 +28,7 @@ func CreateDataKarya(Id_karya string, Kategory string, Judul string, Deskripsi s
 func ReadDataKarya() []Karya {
 	db := Conn()
 	defer db.Close()
-	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya")
+	rows, err := db.Query("SELECT Id_karya, Kategory, Judul, Deskripsi FROM tb_karya  ORDER BY Id_karya DESC")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -95,14 +95,15 @@ func CekLogin(w http.ResponseWriter, Uname string, Upass string) Userlogin {
 		// mengambil data karya dari database
 		data["karya"] = ReadDataKarya()
 
+		RenderTemplate(w, Dir_Name+"header.html", nil)
 		RenderTemplate(w, Dir_Name+"karya_list.html", data)
+		RenderTemplate(w, Dir_Name+"footer.html", nil)
 	} else {
 		// fmt.Println("salah")
 		data := make(map[string]interface{})
 		data["salah"] = "Maaf username atau password anda salah"
 
 		RenderTemplate(w, Dir_Name+"Login.html", data)
-		// RenderTemplate(w, Dir_Name+"Login.html", nil)
 	}
 	return s
 }
